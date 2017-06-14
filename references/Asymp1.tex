@@ -1,0 +1,184 @@
+\section{Appendix: proofs}
+For the penalized log-likelihood in \eqref{eq:MLE-EN}, let $\phi=(\phi_1',0')'$ and let $$L^1(\phi_1)\equiv L\begin{Bmatrix}\begin{pmatrix}
+\phi_1
+\\ 0
+\end{pmatrix}\end{Bmatrix} \text{ and } Q^1(\phi_1)\equiv Q
+\begin{Bmatrix}
+\begin{pmatrix}
+\phi_1
+\\ 0
+\end{pmatrix}
+\end{Bmatrix}$$ denote the log-likelihood and the penalized log-likelihood of the first $s$ components of $\phi$.
+
+
+\begin{proof}[Proof Theorem 1]
+	Consider the penalized log-likelihood $Q(\phi)$ given in \eqref{eq:MLE-EN} in the neighborhood of the true value $ \phi_{10} $. Let $u\ne 0$, and $\phi_1=\phi_{10}+w_mu$. Setting $\phi_2=0$, we show that for a small enough $\epsilon>0$, there exists a large constant $C$ such that for a sufficiently large $m$,
+	\begin{equation*}
+	P\Bigl(  \sup_{\|u\|=C}Q^1(
+	\phi_{10}+w_mu)  <
+	Q(\phi_{10})
+	\Bigr) \ge 1-\epsilon.
+	\end{equation*}
+Thus, with probability $1-\epsilon$ the maximum is within the ball of radios $Cw_m$.
+
+Note that\begin{align*}
+mD_m(u)&\equiv    Q^1(\phi_1)-Q^1(\phi_{10})
+\\
+&=-\left[ L^1(\phi_{10}+w_mu)-L^1(\phi_{10})\right]
+\\
+&\hspace{2em} +\lambda_1^f\bigl(\|\beta_0+w_m u_\beta\|_1-\|\beta_0\|_1\bigr) +\lambda_1^r\bigl(\|d_0+w_m u_d\|_1-\|d_0\|_1\bigr)
+\\
+&\hspace{2em} +\lambda_2^f\bigl(\|\beta_0+w_m u_\beta\|_2^2-\|\beta_0\|_2^2\bigr) +\lambda_2^r\bigl(\|d_0+w_m u_d\|_2^2-\|d_0\|_2^2\bigr),
+\end{align*}
+where we divided $u$ to its  natural components $u_\beta\in R^p$ and $u_d\in R^q$.  Using the Taylor series expansion we have
+\begin{align*}
+&D_m(u)
+\\
+&=-w_m(m^{-1}\nabla L(\phi_{10}))'u -\frac{w_m^2}{2m}u'[\nabla^2L(\phi_{10})]u +R_m
+\\
+&\hspace{2em} +m^{-1}\lambda_1^f\bigl(\|\beta_0+w_m u_\beta\|_1-\|\beta_0\|_1\bigr) +m^{-1}\lambda_1^r\bigl(\|d_0+w_m u_d\|_1-\|d_0\|_1\bigr)
+\\
+&\hspace{2em} +m^{-1}\lambda_2^f\bigl(\|\beta_0+w_m u_\beta\|_2^2-\|\beta_0\|_2^2\bigr) +m^{-1}\lambda_2^r\bigl(\|d_0+w_m u_d\|_2^2-\|d_0\|_2^2\bigr),
+\end{align*}
+%
+where $\nabla L(\phi_{10}),\nabla^2 L(\phi_{10})$ denote the vector and matrix of the first and second order partial derivatives of $L(\phi_{1})$  at $\phi_{10}$ respectively. $\nabla P(\beta,d),\nabla^2P(\beta,d)$ denote the first and second derivatives of the penalty term at $(\beta_0,d_0)$. The remainder $R_n$  tends to zero as m $\rightarrow \infty$ since, by \nameref{C2}, $|R_m|$ can be bounded by
+$$\left( \frac{w_m^3\|u\|_2^3}{6m}\right) \sum\limits_{i=1}^{m} M(y_i,X_i,Z_i) = O_P( w_m^{3}).$$
+
+
+The $j${th} partial derivative for each corresponding $\beta_1,d_1,\gamma_1$  the $\nabla L(\phi_{10})$ satisfies
+$E\left\lbrace \frac{\partial}{\partial \beta_j}L(\phi_1)\right\rbrace=E\left\lbrace \frac{\partial}{\partial d_j}L(\phi_1)\right\rbrace=E\left\lbrace \frac{\partial}{\partial \gamma_j}L(\phi_1)\right\rbrace=0$ and thus the corresponding empirical means  are $O_p(m^{-1/2})$.
+
+For $\nabla^2 L(\phi_{10})$ we have $$m^{-1} \nabla^2 L(\phi_{10}) \rightarrow_p -I(\phi_{10}),$$ where $I(\phi_{10})$ is the Fisher information evaluated at $\phi_{10}$, which is  positive definite by  (\nameref{C1}). By choosing a sufficiently large $C$, the second term dominates the first term uniformly in $\|u\|=C$.
+
+For the penalty term if $w_mP(\beta,d) \rightarrow 0$ as $m \rightarrow \infty$ it follows that $P(\beta,d) \rightarrow_p 0$, and thus also dominated by the second term.  The absolute value of the  penalty component of $D_m(u)$ is bounded by
+\begin{align*}
+&\hspace{-2em} m^{-1}w_m\lambda_1^f\|u_\beta\|_1 +m^{-1}w_m\lambda_1^r\|u_d\|_1
+  +m^{-1}\lambda_2^f\bigl(2w_m\|\beta_0\|_2 \|u_\beta\|_2 +w_m^2\|u_0\|_2^2\bigr)
+\\
+&\hspace{2em} +m^{-1}\lambda_2^r\bigl(2w_m\|d_0\|_2 \|u_d\|_2+w_m^2\|u_d\|_2^2\bigr)
+\\
+&\le m^{-1}w_mC\bigl(\lambda_1^f\sqrt s  +\lambda_1^r\sqrt s   +\lambda_2^f(2\|\beta_0\|_2  + w_m C)  +\lambda_2^r(2\|d_0\|_2  + w_m C)\bigr).
+\end{align*}
+%$$w_m^2 C^2> \frac{w_m C\lambda_1 \sqrt s}{m} + \frac{\lambda_2 w_m^2 c^2}{m} + \frac{\lambda_2 w_m C p }{m}  $$
+%$$ 1> \frac{\lambda_1 \sqrt s}{m w_m C} + \frac{\lambda_2 }{m} + \frac{\lambda_2  s }{m w_m C}  $$
+which is dominated by the second term of $D_m(u)$. Therefore, by choosing  a sufficiently large $C$ there exists a local maximum inside $\left\lbrace\phi_{10}+w_mu:\|u\|<C \right\rbrace$  with probability $1-\epsilon$, thus there exists a local maximizer $\hat{\phi}=(\hat{\phi_1}',0')'$ of $\phi_0=(\phi_1',0')'$ such that $\|\hat{\phi_1}-\phi_{10}\|=O_p(w_m)$.
+\end{proof}
+For the following proof we define $\phi=(\beta',d',\gamma')$ as a $k \times 1$ vector of unknown parameters of size $k=k_{\beta}+k_d+k_{\gamma}$. Let $\phi_2=(\beta'_2,d'_2,\gamma'_2)$ be a vector of size $k_2=k-s$ corresponding to the true zero parameters, given $k_2=k_{\beta_2}+k_{d_2}+k_{\gamma_2}$. Reminding that we defined earlier that the likelihood and the penalized log likelihood as
+$$L(\phi)=L\begin{Bmatrix}
+\begin{pmatrix}
+\phi_1 \\ \phi_2
+\end{pmatrix}
+\end{Bmatrix} \text{ and } Q(\phi)=Q\begin{Bmatrix}
+\begin{pmatrix}
+\phi_1 \\ \phi_2
+\end{pmatrix}
+\end{Bmatrix}.$$
+\begin{proof}[Proof Theorem 2]
+For $m\rightarrow\infty$ and any $\phi_1:||\phi_1-\phi_{10}||_1\le Mm^{-1/2}$ and for  $\epsilon_m=Mm^{-1/2}$ and for each $j=(s+1),\dots,(k_{\beta_2}+k_{d_2})$ we have with probability tending to 1 that
+\begin{align}
+\label{eq:derivQ}
+\frac{\partial}{\partial\varphi_j}Q(\phi)<0 \text{ for } & 0<\varphi_j<\epsilon_m
+\\
+\frac{\partial}{\partial\varphi_j}Q(\phi)>0 \text{ for } & -\epsilon_m<\varphi_j<0 \nonumber
+\end{align}
+The partial derivative of $Q(\phi)$ with respect to $\varphi_j$ is given by:
+$$\frac{\partial}{\partial\varphi_j}Q(\phi)
+=\frac{\partial}{\partial\varphi_j}L(\phi)-\left( \lambda_1\text{sgn}(\varphi_j)+2\lambda_2\varphi_j\right),$$ noting that the penalty is dependent on whether $\varphi_j$ is $\beta$ or d.
+
+One can verify \eqref{eq:derivQ} through the Taylor Series expansion  of $\frac{\partial}{\partial\varphi_j}L(\phi)=\frac{\partial}{\partial\varphi_j}L(\phi)$ around $\phi_0$:
+\begin{align}
+\label{eq:derivQTaylor}
+\frac{\partial}{\partial\varphi_j} Q(\phi) =&\frac{\partial}{\partial\varphi_j}L(\phi_0) -\sum_{l=1}^{k}\frac{\partial}{\partial\varphi_l} \left(\frac{\partial}{\partial\varphi_j}L(\phi_0)\right) (\varphi_l-\varphi_{l0})
+\\
++&\frac{1}{2} \sum_{i=1}^{m} \sum_{l=1}^{k} \sum_{g=1}^{k} \frac{\partial^2}{\partial\varphi_l\partial\varphi_g} \left(\frac{\partial}{\partial\varphi_j}L_i(\phi_*)\right) (\varphi_l-\varphi_{l0}) (\varphi_g-\varphi_{g0}) \nonumber
+\\
+-&\left( \lambda_1\text{sgn}(\varphi_j)+2\lambda_2\varphi_j\right), \nonumber
+\end{align}
+where $\phi_*$ is on the interval connecting $\phi$ and $\phi_0$. Next we define the first order derivatives needed to numerically solve \eqref{eq:derivQTaylor}:
+\begin{align*}
+L_{\beta}=&\frac{\partial}{\partial\beta_j}L(\phi_0)=X'_jV^{-1}(y-X\beta)=O_p(m^{-1/2})\\
+L_{d}=&\frac{\partial}{\partial d_j}L(\phi_0)=\frac{1}{2}\left[ \Tr(V^{-1}S^j)+(y-X\beta)'(V^{-1}S^jV^{-1})(y-X\beta)\right]=O_p(m^{-1/2}),
+\end{align*}
+where $S^j=Z(\frac{\partial}{\partial d_j}D\Gamma\Gamma'D)Z'$ and $\Tr(A)$ is the trace operator on a given matrix A. We now define the second order derivatives which follow $\frac{1}{m}\nabla^2L(\phi)|_{\phi=\phi_0}\rightarrow E_{\phi_1=\phi_{10}}[\nabla^2L(\phi)]$, where
+\begin{equation*}
+E[\nabla^2L(\phi)]=E
+\left[ \begin{array}{ccc}
+L_{\beta\beta}&L_{\beta d}&L_{\beta\gamma}\\
+L'_{\beta d}&L_{dd}&L_{d\gamma}\\
+L'_{\beta\gamma}&L'_{d\gamma}&L_{\gamma\gamma}
+\end{array}\right],
+\end{equation*}
+\begin{align*}
+E[L_{\beta\beta}]_j=&-XV^{-1}X\\
+E[L_{\beta d}]_j=&-E\left[X'_j(V^{-1}S^jV^{-1})(y-X\beta)\right]|_{\phi=\phi_0}=0\\
+E[L_{\beta\gamma}]_j=&-E\left[X'_j(V^{-1}T^jV^{-1})(y-X\beta)\right]|_{\phi=\phi_0}=0 \nonumber\\
+E[L_{dd}]_{jl}=&-\Tr(V^{-1}S^jV^{-1}S^l)|_{\left\lbrace j\ge (s+1),\phi_j=0\right\rbrace }=0\\
+E[L_{\gamma\gamma}]_{jl}=&-\Tr(V^{-1}T^jV^{-1}T^l)|_{\left\lbrace j\ge (s+1),\phi_j=0\right\rbrace }=0 \nonumber\\
+E[L_{d\gamma}]_{jl}=&-\Tr(V^{-1}S^jV^{-1}T^l)|_{\left\lbrace j\ge (s+1),\phi_j=0\right\rbrace }=0 \nonumber,
+\end{align*}
+where $T^j=ZD(\frac{\partial}{\partial \gamma_j}\Gamma\Gamma')DZ'$.\\ Using these partial derivatives we solve \eqref{eq:derivQTaylor} first for $\phi_j=\beta_j$ and then for $\phi_j=d_j$.
+\begin{align*}
+ &\frac{1}{\sqrt{m}}\left(\frac{\partial}{\partial \beta_j}Q(\phi)\right)
+ \\=
+ &\frac{1}{\sqrt{m}} \Biggl [ L_{\beta}
+ -m\left(\sum_{l=1}^{k_{\beta}}L_{\beta\beta}(\beta_l-\beta_{l0})
+ +\sum_{l=k_{\beta+1}}^{k_{d}}L_{\beta d}(d_l-d_{l0})
+ +\sum_{l=k_{d+1}}^{k_{\gamma}}L_{\beta\gamma}(\gamma_l-\gamma_{l0})\right)	\\&
+ +\sum_{i=1}^{m}\sum_{l=1}^{k_{\beta}}\sum_{g=k_{\beta}+1}^{k_d}\frac{\partial}{\partial \beta_g}L_{\beta d}(\beta_l-\beta_{l0})(d_g-d_{g0})
+ \\&
+ +\sum_{i=1}^{m}\sum_{l=1}^{k_{\beta}}\sum_{g=k_{d}+1}^{k_{\gamma}}\frac{\partial}{\partial \beta_g}L_{\beta \gamma}(\beta_l-\beta_{l0})(\gamma_g-\gamma_{g0})
+ \\
+ &+\sum_{i=1}^{m}\sum_{l=k_{\beta}+1}^{k_d}\sum_{g=k_{d+1}}^{k_{\gamma}}\frac{\partial}{\partial \gamma_g}L_{\beta d}(d_l-d_{l0})(\gamma_g-\gamma_{g0})
+ \\
+ &+\frac{1}{2}\Biggr(\sum_{i=1}^{m}\sum_{l=k_{\beta}+1}^{k_d}\sum_{g=k_{\beta}+1}^{k_d}\frac{\partial}{\partial d_g}L_{\beta d}(d_l-d_{l0})(d_g-d_{g0})
+ \\
+ &+\sum_{i=1}^{m}\sum_{l=k_d+1}^{k_{\gamma}}\sum_{g=k_{d+1}}^{k_{\gamma}}\frac{\partial}{\partial \gamma_g}L_{\beta \gamma}(\gamma_l-\gamma_{l0})(\gamma_g-\gamma_{g0})\Biggr)
+ -\left(\lambda^f_1\text{sgn}(\beta_j)+2\lambda_2^f(\beta_j)\right)
+  \Biggr],
+\end{align*}
+given $||\phi-\phi_0||_1\le Mm^{-1/2}$ then we have {\footnotesize
+\begin{equation}
+\frac{1}{\sqrt{m}}\left(\frac{\partial}{\partial \beta_j}Q(\phi)\right)=-\left(\lambda^f_1\text{sgn}(\beta_j)+2\lambda_2^f(\beta_j)\right)+O_p(1).
+\end{equation}}
+For $\beta_{j0}=0$ and $\lbrace\lambda^f_1,\lambda^f_2\rbrace\rightarrow \infty$ the sign of the derivative is completely determined by $\beta_j$, more specifically:
+\begin{equation*}
+\begin{array}{cccc}
+\text{if} & M>\beta_j>0&\text{then}&\frac{\partial}{\partial \beta_j}Q(\phi)<0
+\\
+\text{if} & -M<\beta_j<0&\text{then}&\frac{\partial}{\partial \beta_j}Q(\phi)>0
+\end{array}.
+\end{equation*}
+Similarly,
+\begin{align}\notag
+ &\frac{1}{\sqrt{m}}\left(\frac{\partial}{\partial d_j}Q(\phi)\right)
+ \\\notag
+ &=\frac{1}{\sqrt{m}} \Biggl [ L_{d}
+ -m\left(\sum_{l=1}^{k_{\beta}}L_{\beta\beta}(\beta_l-\beta_{l0})
+ +\sum_{l=k_{\beta+1}}^{k_{d}}L_{\beta d}(d_l-d_{l0})
+ +\sum_{l=k_{d+1}}^{k_{\gamma}}L_{\beta\gamma}(\gamma_l-\gamma_{l0})\right)
+ \\\notag\displaybreak	&\hspace{2em}+\sum_{i=1}^{m}\sum_{l=1}^{k_{\beta}}\sum_{g=1}^{k_{\beta}}\frac{\partial}{\partial \beta_g}L_{d\beta}(\beta_l-\beta_{l0})(\beta_g-\beta_{g0})
+ \\\notag
+ &\hspace{2em}+\sum_{i=1}^{m}\sum_{l=k_{\beta}+1}^{k_d}\sum_{g=k_{d}+1}^{k_{\gamma}}\frac{\partial}{\partial \gamma_g}L_{d d}(d_l-d_{l0})(\gamma_g-\gamma_{g0})
+ \\\notag
+ &\hspace{2em}+\sum_{i=1}^{m}\sum_{l=k_{\beta}+1}^{k_d}\sum_{g=k_{d+1}}^{k_{\gamma}}\frac{\partial}{\partial d_g}L_{ d\beta}(\beta_l-\beta_{l0})(d_g-d_{g0})
+ \\\notag
+ &\hspace{2em}+\frac{1}{2}\Biggr(\sum_{i=1}^{m}\sum_{l=k_{\beta}+1}^{k_d}\sum_{g=k_{\beta}+1}^{k_d}\frac{\partial}{\partial d_g}L_{d d}(d_l-d_{l0})(d_g-d_{g0})
+ \\\notag
+ &\hspace{2em}+\sum_{i=1}^{m}\sum_{l=k_d+1}^{k_{\gamma}}\sum_{g=k_{d+1}}^{k_{\gamma}}\frac{\partial}{\partial \gamma_g}L_{d \gamma}(\gamma_l-\gamma_{l0})(\gamma_g-\gamma_{g0})\Biggr)-\left(\lambda^r_1\text{sgn}(d_j)+2\lambda_2^r(d_j)\right)
+  \Biggr],
+\end{align}
+given $||\phi-\phi_0||_1\le Mm^{-1/2}$ then we have {\footnotesize
+\begin{equation*}
+\frac{1}{\sqrt{m}}\left(\frac{\partial}{\partial d_j}Q(\phi)\right)=-\left(\lambda^r_1\text{sgn}(d_j)+2\lambda_2^r(d_j)\right)+O_p(1).
+\end{equation*}}
+For $d_{j0}=0$ and $(\lambda^r_1,\lambda^r_2)\rightarrow \infty$ the sign of the derivative is completely determined by $d_j$, more specifically:
+{
+	\begin{equation*}
+	\begin{array}{cccc}
+	\text{if} & M>d_j>0&\text{then}&\frac{\partial}{\partial d_j}Q(\phi)<0
+\\
+	\text{if} & -M<d_j<0&\text{then}&\frac{\partial}{\partial d_j}Q(\phi)>0
+\\
+	\end{array}.
+	\end{equation*}}
+\end{proof} 

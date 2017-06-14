@@ -1,0 +1,30 @@
+\RequirePackage{color}
+
+\newcounter{margc}
+
+
+
+\def\boxit#1#2#3{\hbox{\vrule width #2               %The left line
+                     \vtop{%
+                             \vbox{\hrule  height #2 \kern#1 %The upper line and space
+                           \hbox{\kern#1 #3\kern#1}  %Right space; text; left space
+                          }%
+                     \kern#1 \hrule  height #2   %The bottom line and space
+                  }%
+                         \vrule width #2             %The right line
+                      } %
+                  }
+
+
+
+\def\marg#1{\stepcounter{margc}\color{blue}$\dag_{\arabic{margc}}$\color{black}\color{black}\marginpar{\color{blue}\arabic{margc} 
+%
+    \boxit{3pt}{1pt}{%
+        \textwidth = 1.2\marginparwidth
+        \begin{minipage}%
+            \textwidth\begin{sloppypar}\raggedright%
+            \tiny \hspace{
+0pt}#1\end{sloppypar}%
+        \end{minipage}%
+    }%
+    }}
