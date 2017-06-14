@@ -11,7 +11,7 @@
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
-#'  EXAMPLE1
+#'  #EXAMPLE1
 #'  }
 #' }
 #' @importFrom quadprog solve.QP
@@ -49,7 +49,6 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 
   D.lme=diag(q)
   stdev.init=rep(1,q)
-  
 
 	junk = t(chol(D.lme+eps.tol*diag(q)))
 
@@ -61,16 +60,14 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 
 	#Block Diagonal of Z
   Z.bd = matrix(0,nrow=(n.tot),ncol=(n*q))
-  #W.bd=t(Z)%*%Z
 	W.bd = matrix(0,nrow=(n*q),ncol=(n*q))
 	start.point = 1
-	for (i in 1:n)
-	{
+	for (i in 1:n){
 		end.point = start.point + (n.i[i] - 1) 
 		Z.bd[start.point:end.point,(q*(i-1)+1):(q*i)] = Z[start.point:end.point,]
 		start.point = end.point + 1
 	}
-#Z.bd0=as.matrix(bdiag(llply(split(Z,sort(rep(1:length(n.i),n.i[1])))[],matrix,nrow=n.i[1],byrow=T)))
+	
 	W.bd = t(Z.bd)%*%Z.bd
 
 	new.beta = beta.hat
@@ -89,11 +86,11 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
   cr.full.k = rep(1,n)%x%diag(q)
 
 	K.matrix=rbind(
-	                t(diag(rep(1,q-1))%x%rep(1,q-1))[,which(lower.tri(matrix(1,q-1,q-1),diag = T))],
+	                t(diag(rep(1,q-1))%x%rep(1,q-1))[,which(lower.tri(matrix(1,q-1,q-1),diag = TRUE))],
             	    rep(0,q*(q-1)/2)
 	                )
 	
-	ident.tilde=t(rep(1,q-1)%x%diag(rep(1,q-1)))[,which(lower.tri(matrix(1,q-1,q-1),diag = T))]
+	ident.tilde=t(rep(1,q-1)%x%diag(rep(1,q-1)))[,which(lower.tri(matrix(1,q-1,q-1),diag = TRUE))]
 
 	beta.est = NULL
 	lambda.est = NULL
@@ -114,11 +111,10 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
   t.bound.l2.r=((t.bound.l1.r-alpha[2]*t.bound.l1.r)/alpha[2])*10^(4)
   
 	b.0 = c(rep(0,2*p + q), -t.bound.l1.f, -t.bound.l1.r)
-	outer.converge = F
+	outer.converge = FALSE
 	n.iter = 0
 
- 		while ((outer.converge==F) && (n.iter < 200))
- 		{
+ 		while ((outer.converge==FALSE) && (n.iter < 200)){
 			n.iter = n.iter + 1
 
 			beta.current = beta.iterate = new.beta
@@ -129,9 +125,8 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 			full.gamma.mat = diag(n)%x%gamma.mat.current
 
 			n.iter1 = 0
-			inner.converge = F
- 			while ((inner.converge==F) && (n.iter1 < 100))
-			{	
+			inner.converge = FALSE
+ 			while ((inner.converge==FALSE) && (n.iter1 < 100)){	
 				beta.current = new.beta
 				lambda.current = new.lambda
 				n.iter1 = n.iter1 + 1
@@ -160,13 +155,8 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 
 				d.linear.prog = as.vector(t(y)%*%cbind(as.matrix(X.star), right.side.mat))*1e-9
 
-        #??
 				D.quadratic.prog = D.quadratic.prog*1e-9+eps.tol*diag(nrow(D.quadratic.prog))
-				#??
 				
-
-				b.init2=c(rep(beta.current,2),lambda.current)  				
-        
         ##############################
 				beta.lambda = quadprog::solve.QP(D.quadratic.prog, d.linear.prog, t(A.trans), bvec=b.0)
         ##############################
@@ -175,10 +165,8 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 				new.lambda = round(beta.lambda$solution[-(1:(2*p))],6)
 
 				diff = abs(beta.current-new.beta)
-			if (max(c(diff))<eps)
-			{
-			  inner.converge = T
-			}
+			if (max(c(diff))<eps) inner.converge = TRUE
+			
  		}
 
 			E.A = NULL
@@ -242,10 +230,8 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 			}
 
 			diff = abs(beta.iterate-new.beta)
-			if (max(c(diff))<eps) 
-			{
-				outer.converge = T
-			}
+			if (max(c(diff))<eps) outer.converge = TRUE
+			
 		}
 
 		beta.est = as.matrix(cbind(beta.est, new.beta))
@@ -271,8 +257,8 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
     BIC.frac=loglikes + df.par*log(n.tot)
 		BIC.value = c(BIC.value,BIC.frac)
 
-    if(verbose==T){
-		cat("Finished bound of (" ,frac[1:2],",",frac[3:4],"), BIC:",BIC.frac,"\n")
+    if(verbose==TRUE){
+		message("Finished bound of (" ,frac[1:2],",",frac[3:4],"), BIC:",BIC.frac,"\n")
     }
 
 	min.BIC = which.min(BIC.value)

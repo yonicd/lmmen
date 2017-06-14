@@ -29,7 +29,7 @@ DETAILS
 \examples{
 \dontrun{
 if(interactive()){
- EXAMPLE1
+ #EXAMPLE1
  }
 }
 }
