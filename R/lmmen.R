@@ -22,10 +22,10 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
   
   tc <- textConnection(NULL, "w") 
 	if (eps <=0) {return(cat("ERROR: Eps must be > 0. \n"))}
-  y=as.matrix(data$Y)
-  X=as.matrix(data$X)
-  Z.0=as.matrix(data$Z)
-  subject=as.matrix(data$subject)
+  y=matrix(data[,grepl('^y',colnames(data))],ncol=1)
+  X=data[,grepl('^X',colnames(data))]
+  Z.0=data[,grepl('^Z',colnames(data))]
+  subject=as.numeric(rownames(data))
   init.beta=c(as.matrix(init.beta))
 	round.set=6
 	n.i = tabulate(subject)
@@ -103,8 +103,8 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
  	t.bound.l1.r = frac[2]*(sum(abs(lambda.hat)))
 
 #Ridge Penalties
-  #alpha=l1.f/l1.f+l2.f==>
-  #alpha*l1.f+alpha*l2.f=l1.f==>
+  #alpha=l1.f/l1.f+l2.f
+  #l1.f=alpha*l1.f+alpha*l2.f
   #l2.f=(l1.f-alpha*l1.f)/alpha
   alpha=frac[3:4]
   t.bound.l2.f=((t.bound.l1.f-alpha[1]*t.bound.l1.f)/alpha[1])*10^(4)
