@@ -252,7 +252,7 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 		Full.Cov.est = new.sigma.2*Full.cov.mat
 		Mean.est = X%*%new.beta
 
-		loglikes = -2*(dmvnorm(x=as.vector(y),mean=as.vector(Mean.est),sigma=as.matrix(Full.Cov.est),log=TRUE))
+		loglikes = -2*(mvtnorm::dmvnorm(x=as.vector(y),mean=as.vector(Mean.est),sigma=as.matrix(Full.Cov.est),log=TRUE))
 		df.par = sum(new.beta!=0)+sum(new.lambda!=0)*((sum(new.lambda!=0)+1)/2)
     BIC.frac=loglikes + df.par*log(n.tot)
 		BIC.value = c(BIC.value,BIC.frac)
