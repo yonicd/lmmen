@@ -21,7 +21,7 @@ initialize_example(n.i = 5, n = 30, q = 4, total.beta = 9,
 \item{seed}{integer, set a seed for reproducibility, Default: NULL}
 }
 \value{
-(n.i*n)x(1+total.beta+q) matrix containing
+(n.i*n)x(1+total.beta+q) matrix containing where the subjects index are the matrix rownames
 \tabular{lcc}{
 \strong{Description} \tab \strong{Parameter} \tab \strong{Dimension}\cr
 Response \tab y \tab (n.i*n)x1 \cr

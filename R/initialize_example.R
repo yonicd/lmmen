@@ -6,7 +6,7 @@
 #' @param total.beta integer, Number of simulated fixed effects, Default: 9
 #' @param true.beta numeric, True of fixed effects indicies, Default: c(1,1,1)
 #' @param seed integer, set a seed for reproducibility, Default: NULL
-#' @return (n.i*n)x(1+total.beta+q) matrix containing
+#' @return (n.i*n)x(1+total.beta+q) matrix containing where the subjects index are the matrix rownames
 #' \tabular{lcc}{
 #' \strong{Description} \tab \strong{Parameter} \tab \strong{Dimension}\cr
 #' Response \tab y \tab (n.i*n)x1 \cr
