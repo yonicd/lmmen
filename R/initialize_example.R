@@ -41,13 +41,18 @@ initialize_example=function(n.i = 5,n = 30,q=4,total.beta=9,true.beta=c(1,1,1),s
   if(q<10){
     true.D = matrix(c(9,4.8,0.6,0, 4.8,4,1,0, .6,1,1,0, 0,0,0,0), nrow=q, ncol=q)
   }else{
-    true.D = matrix(c(9,4.8,0.6,0, 4.8,4,1,0, .6,1,1,0, 0,0,0,0), nrow=q, ncol=q)
-    true.D=rbind(cbind(true.D,matrix(0,nrow=q,ncol=10-q)),matrix(0,nrow=10-q,ncol=10))
+    true.D = matrix(c(9,4.8,0.6,0, 4.8,4,1,0, .6,1,1,0, 0,0,0,0), nrow=4, ncol=4)
+    true.D=rbind(cbind(true.D,matrix(0,nrow=4,ncol=q-4)),matrix(0,nrow=q-4,ncol=q))
   }
   for (i in 1:n)  
   { 
     Xi = cbind(matrix(runif(length(true.beta)*n.i,-2,2), nrow=n.i)) 
-    if(q<10) Zi = cbind(1,matrix(runif((nrow(true.D)-1)*n.i,-2,2), nrow=n.i)) else Zi = cbind(1,Xi)
+    Zi=switch((q<10)+1,{
+      cbind(1,Xi)
+    },
+    {
+      cbind(1,matrix(runif((nrow(true.D)-1)*n.i,-2,2), nrow=n.i))}
+    )
     X = rbind(X, Xi) 
     Z = rbind(Z, Zi[,-1]) 
     S = Zi%*%true.D%*%t(Zi) + diag(n.i) 

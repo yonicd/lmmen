@@ -16,7 +16,8 @@
 #' @export 
 #' @importFrom glmnet cv.glmnet
 #' @importFrom lme4 lmer
-init.beta<-function(dat,method=c('glmnet','lme4')){
+# @importFrom nmle glmmPQL
+init.beta<-function(dat,method=c('glmnet','lme4','glmmPQL'),...){
   
   dat=as.matrix(dat)
   
@@ -34,6 +35,14 @@ init.beta<-function(dat,method=c('glmnet','lme4')){
            subject=as.numeric(rownames(dat))
            init.fit = lme4::lmer(y ~ X -1 + ( Z.fit -1 |subject))
            init.fit@beta
-         })
+         }
+         #, glmmPQL={
+         #   dat<-scale(dat,center=T,scale=T)
+         #   PQL<-nmle::glmmPQL(data=dat,...)
+         #   Delta.start<-c(as.numeric(PQL$coef$fixed),rep(0,6),as.numeric(t(PQL$coef$random$team)))
+         #   Q.start<-as.numeric(VarCorr(PQL)[1,1])
+         #   
+         # }
+         )
   
 }

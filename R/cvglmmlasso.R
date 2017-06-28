@@ -35,14 +35,16 @@ cv.glmmLasso=function(dat,form.fixed=NULL,form.rnd=NULL,lambda=seq(500,0,by=-5),
   
   for(j in 1:length(lambda))
   {
-    suppressWarnings({
-      fn <- try(glmmLasso::glmmLasso(fix = as.formula(form.fixed),
-                                 rnd = form.rnd,
-                                 data = dat,lambda = lambda[j],
-                                 switch.NR = FALSE,final.re=TRUE,
-                                 control = list(start=Delta.start[j,],q.start=Q.start[j]))      
-    )
-      })
+    suppressMessages({
+      suppressWarnings({
+        fn <- try(glmmLasso::glmmLasso(fix = as.formula(form.fixed),
+                                       rnd = form.rnd,
+                                       data = dat,lambda = lambda[j],
+                                       switch.NR = FALSE,final.re=TRUE,
+                                       control = list(start=Delta.start[j,],q.start=Q.start[j]))      
+        )
+      })      
+    })
     
     if(class(fn)!="try-error")
     {  

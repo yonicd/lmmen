@@ -4,7 +4,7 @@
 \alias{init.beta}
 \title{FUNCTION_TITLE}
 \usage{
-init.beta(dat, method = c("glmnet", "lme4"))
+init.beta(dat, method = c("glmnet", "lme4", "glmmPQL"), ...)
 }
 \arguments{
 \item{dat}{PARAM_DESCRIPTION}
