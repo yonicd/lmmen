@@ -5,7 +5,7 @@ Authors@R: person("Jonathan", "Sidi", email = "yonicd@gmail.com", role = c("aut"
 Description: Solve the linear mixed model elastic net.
 Depends: R (>= 3.3.2)
 Imports: 
-  quadprog, mvtnorm, glmnet, lme4, parallel
+  quadprog, mvtnorm, glmnet, lme4, parallel, lmmlasso
 Remotes: bitbucket::metrumrg/qapply/working/qapply
 License: GPL2 | GPL3
 Encoding: UTF-8
