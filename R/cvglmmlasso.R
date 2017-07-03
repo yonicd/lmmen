@@ -67,5 +67,5 @@ cv.glmmLasso=function(dat,form.fixed=NULL,form.rnd=NULL,lambda=seq(500,0,by=-5),
     final
   })
   
-  c(final$coefficients,diag(final$StdDev),aic.opt=final$aic,bic.opt=final$bic,lambda.opt=lambda[opt],mape.opt=mean(abs(predict(final)-dat$y)))
+  c(final$coefficients,diag(final$StdDev),bic.opt=final$bic,lambda.opt=lambda[opt])
 }  

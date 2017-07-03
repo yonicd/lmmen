@@ -15,7 +15,7 @@ cv.lmmlasso<-function(data,lambda=seq(0,500,5),...){
   data=as.matrix(data)
   y=matrix(data[,grepl('^y',colnames(data))],ncol=1)
   X=cbind(rep(1,nrow(data)),data[,grepl('^X',colnames(data))])
-  Z=data[,grepl('^Z',colnames(data))]
+  Z=cbind(rep(1,nrow(data)),data[,grepl('^Z',colnames(data))])
   grp=factor(row.names(data))
   if(!'pdMat'%in%names(match.call()[3])) pdMat="pdSym"
   BIC_vec<-BIC_DIFF<-BIC_DIFF_I<-Inf
