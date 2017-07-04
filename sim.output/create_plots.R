@@ -152,12 +152,13 @@ gen.plot=gen.plot%>%mutate(id=factor(id,labels=c(1:20,"21+")),flabel=sprintf('%s
 
 gen.plot$simtype.lbl<-factor(gen.plot$simtype.lbl,levels=levels(gen.plot$simtype.lbl)[c(2,4,1,3,5)])
 
-p4=gen.plot%>%plyr::dlply(c('ex'),.fun=function(df){
-  yint<-df%>%mutate(type=as.character(type))%>%
-    dplyr::distinct(flabel,type)%>%
-    dplyr::left_join(data.frame(yint=c(0,1,3,2,1,0),type=c(rep('Fixed Effects',2),rep('Random Effects',4)),stringsAsFactors = FALSE),by='type')
-  
-  df%>%ggplot(aes(x=id,y=est,fill=simtype.lbl))+
+yint<-gen.plot%>%filter(ex<=3)%>%
+  mutate(type=as.character(type))%>%
+  dplyr::distinct(flabel,type)%>%
+  dplyr::left_join(data.frame(yint=c(0,1,3,2,1,0),type=c(rep('Fixed Effects',2),rep('Random Effects',4)),stringsAsFactors = FALSE),by='type')
+
+p4.1=gen.plot%>%filter(ex<=3)%>%
+  ggplot(aes(x=id,y=est,fill=simtype.lbl))+
     geom_boxplot()+
     facet_wrap(~flabel,scales="free",ncol=2)+
     xlab("Parameter")+
@@ -166,7 +167,23 @@ p4=gen.plot%>%plyr::dlply(c('ex'),.fun=function(df){
     theme_bw(base_size = fs)+
     theme(legend.position="bottom")+
     geom_hline(aes(yintercept=yint),linetype=2,data=yint)
-})
+
+yint<-gen.plot%>%filter(ex>3)%>%
+  mutate(type=as.character(type))%>%
+  dplyr::distinct(flabel,type)%>%
+  dplyr::left_join(data.frame(yint=c(0,1,3,2,1,0),type=c(rep('Fixed Effects',2),rep('Random Effects',4)),stringsAsFactors = FALSE),by='type')
+
+p4.2=gen.plot%>%filter(ex>3)%>%
+  ggplot(aes(x=id,y=est,fill=simtype.lbl))+
+  geom_boxplot()+
+  facet_wrap(~flabel,scales="free",ncol=2)+
+  xlab("Parameter")+
+  ylab("Estimate")+
+  scale_fill_discrete(name="Simulation Type")+
+  theme_bw(base_size = fs)+
+  theme(legend.position="bottom")+
+  geom_hline(aes(yintercept=yint),linetype=2,data=yint)
+
 
 p_scat=ggplot(case.panel$obs, aes(lmmen,glmnet))+ geom_point()+theme_bw(base_size = fs)+
   #geom_text(vjust=1,size=3)+
@@ -192,12 +209,12 @@ case.panel$ran$Type=factor(case.panel$ran$Type,labels=c("LMMEN"))
 p_eps_r=ggplot(case.panel$ran,aes(x=factor(var),y=stat,fill=Type))+geom_bar(stat = "identity")+ylab('% Persistence')+xlab('Random Effect')+theme_bw(base_size = fs)+
   facet_wrap(~Type)+scale_y_continuous(limits=c(0,1),labels=percent)+  scale_fill_discrete(guide=FALSE)
 
-gggsave(filename = 'figs/lmmen_paper-scenario.pdf',plot = p4,onefile=FALSE,width=14,height=11)
+gggsave(filename = 'figs/lmmen_paper-scenario.pdf',plot = list(p4.1,p4.2),onefile=FALSE,width=14,height=11)
 
-ggsave(filename = 'figs/lmmen_paper-oracle.pdf',plot = p.compare,width=14,height=8)
+ggsave(filename = 'figs/lmmen_paper-oracle001.pdf',plot = p.compare,width=14,height=8)
 
 
-pdf('figs/lmmen_paper-casepanel.pdf',width=18,height=13)
+pdf('figs/lmmen_paper-casepanel001.pdf',width=18,height=13)
 grid.newpage()
 pushViewport(viewport(layout=grid.layout(2,2)))
 print(p_eps_f+ggtitle("Fixed Effects Persistence (a)"),vp=vplayout(1,1))
