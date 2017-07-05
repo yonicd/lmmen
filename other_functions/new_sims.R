@@ -123,8 +123,8 @@ fit.lme4 <- glmer(y ~ X - 1 + (Z - 1 | cluster), data = dat,family = "poisson")
 sat.fit <- build.start.fit(fit.lme4, gamma = 2)
 
 dat<-initialize_example(n.i = 5,n = 30,q=4,total.beta = 100,true.beta = rep(1,20),seed=1)
-
-cv.scad<-function(dat,pen.type='scad'){
+library(rpql)
+cv.scad<-function(dat,pen.type='scad',...){
   dat<-as.matrix(dat)
   if('adl'%in%pen.type){  
     ids <- as.numeric(rownames(dat))
@@ -144,12 +144,12 @@ cv.scad<-function(dat,pen.type='scad'){
   
   if('adl'%in%pen.type){
     fit <- rpql::rpqlseq(y = y, X = X, Z = Z, id = ids, lambda = lambda.seq, pen.type = pen.type, 
-                         pen.weights = sat.fit$pen.weights, start = sat.fit)    
+                         pen.weights = sat.fit$pen.weights, start = sat.fit,...)    
   }else{
-    fit <- rpql::rpqlseq(y = y, X = X, Z = Z, id = ids, lambda = lambda.seq, pen.type = pen.type) 
+    fit <- rpql::rpqlseq(y = y, X = X, Z = Z, id = ids, lambda = lambda.seq, pen.type = pen.type,...) 
   }
-  c(fit$best.fit[[3]]$fixef,sqrt(diag(fit$best.fit[[3]]$ran.cov$subject)),bic.opt=fit$best.fits[[3]]$ics[[3]])
-  #fit$best.fits
+  #c(fit$best.fit[[3]]$fixef,sqrt(diag(fit$best.fit[[3]]$ran.cov$subject)),bic.opt=fit$best.fits[[3]]$ics[[3]])
+  fit$best.fit
 }
 
 x<-cv.scad(sim.data[[1]],pen.type = c('adl'))

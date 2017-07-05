@@ -1,18 +1,18 @@
 library(ggplot2);library(scales);library(dplyr);library(grid)
-load('../sim.output/graph_data2.rdata')
-load('../sim.output/glmmlassoScen1.Rdata')
-load('../sim.output/glmmlassoScen2.Rdata')
+load('./sim.output/graph_data2.rdata')
+load('./sim.output/glmmlassoScen1.Rdata')
+load('./sim.output/glmmlassoScen2.Rdata')
 
-load('../sim.output/lmmlassoScen1.Rdata')
-load('../sim.output/lmmlassoScen2.Rdata')
-load('../sim.output/lmmlassoScen3.Rdata')
+load('./sim.output/lmmlassoScen1.Rdata')
+load('./sim.output/lmmlassoScen2.Rdata')
+load('./sim.output/lmmlassoScen3.Rdata')
 
-load('../sim.output/scadScen1.Rdata')
-load('../sim.output/scadScen2.Rdata')
-load('../sim.output/scadScen3.Rdata')
+load('./sim.output/scadScen1.Rdata')
+load('./sim.output/scadScen2.Rdata')
+load('./sim.output/scadScen3.Rdata')
 
 colnames(sim.lmmlasso3)[1:20]<-c('(Intercept)',paste0('X',1:9),paste0('V',1:10))
-load('../sim.output/lmmlassoScen4.Rdata')
+load('./sim.output/lmmlassoScen4.Rdata')
 colnames(sim.lmmlasso4)[1:14]<-c('(Intercept)',paste0('X',1:9),paste0('V',1:4))
 
 colnames(sim.scad1)<-gsub('^z','V',colnames(sim.scad1))
@@ -91,7 +91,19 @@ fs=21
 #                       p=c(rep(c(1,1,rep(0,7)),2),1,0,1,rep(0,6),rep(1,3),rep(0,6),rep(1,20),rep(0,180),
 #                           rep(c(rep(1,3),0),2),rep(1,3),rep(0,7),rep(c(rep(1,3),0),2)))
 
-temp=left_join(fit.min.all%>%filter(type!="BIC")%>%mutate(type=factor(type)),real_param, by=c("ex","type","id"))%>% mutate(nz=as.numeric(as.numeric(est!=0)==p))%>%group_by(ex,simtype,type,iterid)%>%
+temp=left_join(
+  fit.min.all%>%
+    filter(type!="BIC")%>%
+    mutate(type=factor(type)),
+  real_param,
+  by=c("ex","type","id"))%>%
+  mutate(nz=est!=0)%>%
+  group_by(ex,simtype,type,iterid)%>%
+  summarise(nz=sum(p))
+  
+  
+  mutate(nz=as.numeric(as.numeric(est!=0)==p))%>%
+  group_by(ex,simtype,type,iterid)%>%
   summarise(truez=sum(nz))
 
 temp=left_join(temp,real_param%>%group_by(ex,type)%>%
@@ -106,7 +118,18 @@ a1<-rbind(
   temp%>%group_by(simtype,type,ex)%>%summarise(pct=mean(pct)))%>%
   mutate(pct.type="Mean Percent")
 
-a2<-rbind(temp1%>%mutate(type="MODEL",all=as.numeric(pct==1))%>%group_by(type,simtype,ex,all)%>%summarise(pct=1-(n()/200))%>%filter(all==0)%>%select(-all),temp%>%mutate(all=as.numeric(pct==1))%>%group_by(type,simtype,ex,all)%>%summarise(pct=1-(n()/200))%>%filter(all==0)%>%select(-all))%>%
+a2<-rbind(temp1%>%
+            mutate(type="MODEL",all=as.numeric(pct==1))%>%
+            group_by(type,simtype,ex,all)%>%
+            summarise(pct=1-(n()/200))%>%
+            filter(all==0)%>%
+            select(-all),
+          temp%>%
+            mutate(all=as.numeric(pct==1))%>%
+            group_by(type,simtype,ex,all)%>%
+            summarise(pct=1-(n()/200))%>%
+            filter(all==0)%>%
+            select(-all))%>%
   ungroup%>%mutate(pct.type="Oracle")
 
 a3<-expand.grid(type=c("MODEL","FIXED","STDDEV"),pct.type=c("Mean Percent","Oracle"))%>%mutate(simtype="penlme",ex=5,pct=0)
