@@ -1,32 +1,28 @@
 #' @title Initialize Scenario
-#' @description Create a scenario for the paper
+#' @description Create a scenario to run the evaluation functions.
 #' @param n.i integer, Observations per subject, Default: 5
 #' @param n integer, Number of subjects, Default: 30
 #' @param q integer, Number of random effects, Default: 4
 #' @param total.beta integer, Number of simulated fixed effects, Default: 9
 #' @param true.beta numeric, True of fixed effects indicies, Default: c(1,1,1)
 #' @param seed integer, set a seed for reproducibility, Default: NULL
-#' @return (n.i*n)x(1+total.beta+q) matrix containing where the subjects index are the matrix rownames
+#' @return (n.i*n) x (1+total.beta+q) matrix containing where the subjects index are the matrix rownames
 #' \tabular{lcc}{
 #' \strong{Description} \tab \strong{Parameter} \tab \strong{Dimension}\cr
-#' Response \tab y \tab (n.i*n)x1 \cr
-#' Fixed \tab X \tab (n.i*n)xtotal.beta\cr
-#' Random \tab Z \tab (n.i*n)xq \cr
+#' Response \tab y \tab (n.i*n) x 1 \cr
+#' Fixed \tab X \tab (n.i*n) x total.beta\cr
+#' Random \tab Z \tab (n.i*n) x q \cr
 #'}
-#' @details DETAILS
 #' @examples 
-#' \dontrun{
-#' if(interactive()){
 #'  initialize_example(n.i = 5,n = 30,q=4,seed=1)
 #'  initialize_example(n.i = 10,n = 60,q=4,seed=1)
 #'  initialize_example(n.i = 5,n = 60,q=10,seed=1)
-#'  }
-#' }
 #' @seealso 
 #'  \code{\link[mvtnorm]{rmvnorm}}
 #' @rdname initialize_example
 #' @export 
 #' @importFrom mvtnorm rmvnorm
+#' @importFrom stats runif
 initialize_example=function(n.i = 5,n = 30,q=4,total.beta=9,true.beta=c(1,1,1),seed=NULL){
   
   if(!is.null(seed)) set.seed(seed)
@@ -46,12 +42,12 @@ initialize_example=function(n.i = 5,n = 30,q=4,total.beta=9,true.beta=c(1,1,1),s
   }
   for (i in 1:n)  
   { 
-    Xi = cbind(matrix(runif(length(true.beta)*n.i,-2,2), nrow=n.i)) 
+    Xi = cbind(matrix(stats::runif(length(true.beta)*n.i,-2,2), nrow=n.i)) 
     Zi=switch((q<10)+1,{
       cbind(1,Xi)
     },
     {
-      cbind(1,matrix(runif((nrow(true.D)-1)*n.i,-2,2), nrow=n.i))}
+      cbind(1,matrix(stats::runif((nrow(true.D)-1)*n.i,-2,2), nrow=n.i))}
     )
     X = rbind(X, Xi) 
     Z = rbind(Z, Zi[,-1]) 

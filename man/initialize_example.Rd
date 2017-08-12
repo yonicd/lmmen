@@ -21,28 +21,21 @@ initialize_example(n.i = 5, n = 30, q = 4, total.beta = 9,
 \item{seed}{integer, set a seed for reproducibility, Default: NULL}
 }
 \value{
-(n.i*n)x(1+total.beta+q) matrix containing where the subjects index are the matrix rownames
+(n.i*n) x (1+total.beta+q) matrix containing where the subjects index are the matrix rownames
 \tabular{lcc}{
 \strong{Description} \tab \strong{Parameter} \tab \strong{Dimension}\cr
-Response \tab y \tab (n.i*n)x1 \cr
-Fixed \tab X \tab (n.i*n)xtotal.beta\cr
-Random \tab Z \tab (n.i*n)xq \cr
+Response \tab y \tab (n.i*n) x 1 \cr
+Fixed \tab X \tab (n.i*n) x total.beta\cr
+Random \tab Z \tab (n.i*n) x q \cr
 }
 }
 \description{
-Create a scenario for the paper
-}
-\details{
-DETAILS
+Create a scenario to run the evaluation functions.
 }
 \examples{
-\dontrun{
-if(interactive()){
  initialize_example(n.i = 5,n = 30,q=4,seed=1)
  initialize_example(n.i = 10,n = 60,q=4,seed=1)
  initialize_example(n.i = 5,n = 60,q=10,seed=1)
- }
-}
 }
 \seealso{
 \code{\link[mvtnorm]{rmvnorm}}

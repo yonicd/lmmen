@@ -2,7 +2,7 @@
 % Please edit documentation in R/lmmen.R
 \name{lmmen}
 \alias{lmmen}
-\title{linear mixed model elastic net}
+\title{linear mixed model Elastic Net}
 \usage{
 lmmen(data, init.beta, frac, eps = 10^(-4), verbose = FALSE)
 }
@@ -11,7 +11,8 @@ lmmen(data, init.beta, frac, eps = 10^(-4), verbose = FALSE)
 
 \item{init.beta}{numeric, initial values for fixed effects coefficients}
 
-\item{frac}{PARAM_DESCRIPTION}
+\item{frac}{numeric, penalty levels for fixed and random effects expressed in ratios. 
+c(L1.fixed,L2.fixed,L1.random,L2.random)}
 
 \item{eps}{numeric, tolerance level to pass to solve.QP, Default: 10^(-4)}
 
@@ -21,15 +22,13 @@ lmmen(data, init.beta, frac, eps = 10^(-4), verbose = FALSE)
 list
 }
 \description{
-Solve a linear mixed model elastic net optimization problem.
+Regularize a linear mixed model with the linear mixed model Elastic Net penalty.
 }
 \details{
 DETAILS
 }
 \examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
+ dat <- initialize_example(n.i = 5,n = 30,q=4,seed=1)
+ init <- init.beta(dat,method='glmnet')
+ lmmen(data=dat,init.beta=init,frac=c(0.8,1,1,1))
 }

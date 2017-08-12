@@ -1,23 +1,20 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param dat PARAM_DESCRIPTION
-#' @param method PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Evaluate fixed effects initial values for lmmen
+#' @description Evaluate fixed effects initial values for lmmen via cv.glmnet or lme4. 
+#' @param dat data.frame, data to solve initial values
+#' @param method character, method to use, c('glmnet','lme4')
+#' @return numeric
+#' @details cv.glmnet is set to ridge regression. 
 #' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #init.beta(sim.data[[1]])
-#'  }
-#' }
+#'  dat <- initialize_example(n.i = 5,n = 30,q=4,seed=1)
+#'  init.beta(dat,method='glmnet')
+#'  init.beta(dat,method='lme4')
 #' @seealso 
 #'  \code{\link[glmnet]{cv.glmnet}}
 #' @rdname init.beta
 #' @export 
 #' @importFrom glmnet cv.glmnet
 #' @importFrom lme4 lmer
-# @importFrom nmle glmmPQL
-init.beta<-function(dat,method=c('glmnet','lme4','glmmPQL'),...){
+init.beta<-function(dat,method=c('glmnet','lme4')){
   
   dat=as.matrix(dat)
   
@@ -36,13 +33,6 @@ init.beta<-function(dat,method=c('glmnet','lme4','glmmPQL'),...){
            init.fit = lme4::lmer(y ~ X -1 + ( Z.fit -1 |subject))
            init.fit@beta
          }
-         #, glmmPQL={
-         #   dat<-scale(dat,center=T,scale=T)
-         #   PQL<-nmle::glmmPQL(data=dat,...)
-         #   Delta.start<-c(as.numeric(PQL$coef$fixed),rep(0,6),as.numeric(t(PQL$coef$random$team)))
-         #   Q.start<-as.numeric(VarCorr(PQL)[1,1])
-         #   
-         # }
          )
   
 }

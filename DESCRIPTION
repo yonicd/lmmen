@@ -1,13 +1,13 @@
 Package: lmmen
 Title: Linear Mixed Model Elastic Net
-Version: 0.1
-Authors@R: person("Jonathan", "Sidi", email = "yonicd@gmail.com", role = c("aut", "cre"))
-Description: Solve the linear mixed model elastic net.
-Depends: R (>= 3.3.2)
+Version: 1.0
+Authors@R: person("Jonathan", "Sidi", email = "yoni.sidi@mail.huji.ac.il", role = c("aut", "cre"))
+Description: This package fits (gaussian) linear mixed-effects models
+        for high-dimensional data (n<<p) using the linear mixed model Elastic Net penalty.
+Depends: R (>= 3.3.2), lmmlasso
 Imports: 
-  quadprog, mvtnorm, glmnet, lme4, parallel, lmmlasso
-Remotes: bitbucket::metrumrg/qapply/working/qapply
-License: GPL2 | GPL3
+  quadprog, mvtnorm, glmnet, lme4, utils, stats, glmmLasso
+License: GPL-2 | GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1

@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 references
 other_functions
+sim.output
+^.*\.pdf$

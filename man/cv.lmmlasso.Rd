@@ -20,5 +20,7 @@ numeric, vector that includes values of estimated fixed, random and bic
 Cross Validation for lmmlasso package as shown in example xxx
 }
 \examples{
+\donttest{
  cv.lmmlasso(initialize_example(seed=1))
+ }
 }

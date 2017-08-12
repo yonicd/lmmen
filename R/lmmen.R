@@ -1,26 +1,23 @@
-
-#' @title linear mixed model elastic net
-#' @description Solve a linear mixed model elastic net optimization problem.
+#' @title linear mixed model Elastic Net
+#' @description Regularize a linear mixed model with the linear mixed model Elastic Net penalty.
 #' @param data matrix, data
 #' @param init.beta numeric, initial values for fixed effects coefficients
-#' @param frac PARAM_DESCRIPTION
+#' @param frac numeric, penalty levels for fixed and random effects expressed in ratios. 
+#' c(L1.fixed,L2.fixed,L1.random,L2.random)
 #' @param eps numeric, tolerance level to pass to solve.QP, Default: 10^(-4)
 #' @param verbose boolean, show output during optimization Default: FALSE
 #' @return list
 #' @details DETAILS
 #' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#'  dat <- initialize_example(n.i = 5,n = 30,q=4,seed=1)
+#'  init <- init.beta(dat,method='glmnet')
+#'  lmmen(data=dat,init.beta=init,frac=c(0.8,1,1,1))
 #' @importFrom quadprog solve.QP
 #' @export 
 
 lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 {
-  
-  tc <- textConnection(NULL, "w") 
+
 	if (eps <=0) {return(cat("ERROR: Eps must be > 0. \n"))}
   y=matrix(data[,grepl('^y',colnames(data))],ncol=1)
   X=data[,grepl('^X',colnames(data))]
@@ -258,7 +255,7 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 		BIC.value = c(BIC.value,BIC.frac)
 
     if(verbose==TRUE){
-		message("Finished bound of (" ,frac[1:2],",",frac[3:4],"), BIC:",BIC.frac,"\n")
+		message("Finished bound of (",paste0(frac,collapse = ','),"), BIC:",round(BIC.frac,round.set),"\n")
     }
 
 	min.BIC = which.min(BIC.value)
@@ -270,16 +267,25 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 	gamma.BIC.mat[lower.tri(gamma.BIC.mat)] = gamma.BIC
 	temp.mat = diag(as.vector(lambda.BIC))%*%gamma.BIC.mat
 	Cov.Mat.RE = sigma.2.BIC*temp.mat%*%t(temp.mat)
-	fit = NULL
+	
+	fit <- list()
+	
 	fit$fixed = beta.BIC
 	fit$stddev = sqrt(diag(Cov.Mat.RE))
   fit$lambda=lambda.BIC
 	fit$BIC = BIC.value
 	fit$frac = frac
 	fit$sigma.2 = sigma.2.BIC
-  fit$gamma.mat = gamma.BIC.mat
-	fit$corr = round(diag(1/(fit$stddev+eps.tol))%*%Cov.Mat.RE%*%diag(1/(fit$stddev+eps.tol)),round.set)
-  fit$beta.lambda=beta.lambda
-  close(tc) 
+  fit$Gamma.Mat.RE = gamma.BIC.mat
+  fit$Cov.Mat.RE <- Cov.Mat.RE
+  fit$Full.cov.mat <- Full.cov.mat
+  fit$Mean.est <- Mean.est
+  fit$loglike <- loglikes
+  fit$df <- df.par
+	fit$Corr.Mat.RE <- round(diag(1/(fit$stddev+eps.tol))%*%Cov.Mat.RE%*%diag(1/(fit$stddev+eps.tol)),round.set)
+  fit$solveQP=beta.lambda
+
+  fit <- structure(fit,class=c('lmmen'))
+  
 	return(fit)
 }

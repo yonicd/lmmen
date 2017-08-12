@@ -2,30 +2,28 @@
 % Please edit documentation in R/initbeta.R
 \name{init.beta}
 \alias{init.beta}
-\title{FUNCTION_TITLE}
+\title{Evaluate fixed effects initial values for lmmen}
 \usage{
-init.beta(dat, method = c("glmnet", "lme4", "glmmPQL"), ...)
+init.beta(dat, method = c("glmnet", "lme4"))
 }
 \arguments{
-\item{dat}{PARAM_DESCRIPTION}
+\item{dat}{data.frame, data to solve initial values}
 
-\item{method}{PARAM_DESCRIPTION}
+\item{method}{character, method to use, c('glmnet','lme4')}
 }
 \value{
-OUTPUT_DESCRIPTION
+numeric
 }
 \description{
-FUNCTION_DESCRIPTION
+Evaluate fixed effects initial values for lmmen via cv.glmnet or lme4.
 }
 \details{
-DETAILS
+cv.glmnet is set to ridge regression.
 }
 \examples{
-\dontrun{
-if(interactive()){
- #init.beta(sim.data[[1]])
- }
-}
+ dat <- initialize_example(n.i = 5,n = 30,q=4,seed=1)
+ init.beta(dat,method='glmnet')
+ init.beta(dat,method='lme4')
 }
 \seealso{
 \code{\link[glmnet]{cv.glmnet}}
