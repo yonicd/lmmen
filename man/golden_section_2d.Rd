@@ -2,14 +2,15 @@
 % Please edit documentation in R/golden_section_2d.R
 \name{golden_section_2d}
 \alias{golden_section_2d}
-\title{FUNCTION_TITLE}
+\title{Golden section two dimensional grid search on L1 lmmen penalties}
 \usage{
 golden_section_2d(dat, init.beta, l2 = c(1, 1), opt.lb = c(0, 0),
   opt.ub = c(1, 1), opt.maxiter = 100, opt.tol = 0.1, opt.tau = (sqrt(5)
   - 1)/2)
 }
 \arguments{
-\item{dat}{PARAM_DESCRIPTION}
+\item{dat}{matrix, matrix that includes y (response),X (population covariates),
+Z (random effects covariates (not incl random intercept))}
 
 \item{init.beta}{numeric, initial fixed effects estimates}
 
@@ -19,25 +20,23 @@ golden_section_2d(dat, init.beta, l2 = c(1, 1), opt.lb = c(0, 0),
 
 \item{opt.ub}{numeric, end of interval for L1 fixed and L1 random effects Default: c(1, 1)}
 
-\item{opt.maxiter}{numeric, maximum iterations to search, Default: 10}
+\item{opt.maxiter}{numeric, maximum iterations to search, Default: 100}
 
 \item{opt.tol}{numeric, accuracy value, Default: 0.1}
 
 \item{opt.tau}{numeric, golden proportion coefficient (~0.618) Default: (sqrt(5) - 1)/2}
 }
 \value{
-OUTPUT_DESCRIPTION
+lmmen list object inluding lmmen fit object of min BIC solution
+ and summary statistics from the grid search
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Solve for local minimum with two dimensional golden 
+section on L1 lmmen penalties.
 }
 \examples{
-\donttest{
+\dontrun{
  dat <- initialize_example(n.i = 5,n = 30,q=4,seed=1)
  init <- init.beta(dat,method='glmnet')
- golden_section_2d(dat,init)
-}
+ golden_section_2d(dat,init)}
 }

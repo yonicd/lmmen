@@ -2,8 +2,8 @@ Package: lmmen
 Title: Linear Mixed Model Elastic Net
 Version: 1.0
 Authors@R: person("Jonathan", "Sidi", email = "yoni.sidi@mail.huji.ac.il", role = c("aut", "cre"))
-Description: This package fits (gaussian) linear mixed-effects models
-        for high-dimensional data (n<<p) using the linear mixed model Elastic Net penalty.
+Description: Fits (Gaussian) linear mixed-effects models
+        for high-dimensional data (n<<p) using the linear mixed model elastic-net penalty.
 Depends: R (>= 3.3.2), lmmlasso
 Imports: 
   quadprog, mvtnorm, glmnet, lme4, utils, stats, glmmLasso

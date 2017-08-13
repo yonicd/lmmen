@@ -4,3 +4,4 @@ references
 other_functions
 sim.output
 ^.*\.pdf$
+^cran-comments\.md$

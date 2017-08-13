@@ -2,44 +2,43 @@
 % Please edit documentation in R/golden_section.R
 \name{golden_section}
 \alias{golden_section}
-\title{FUNCTION_TITLE}
+\title{Golden section grid search on a lmmen penalty}
 \usage{
-golden_section(data, init.beta, pen.effect = "FE.L1", opt.lb = 0,
+golden_section(dat, init.beta, pen.effect = "FE.L1", opt.lb = 0,
   opt.ub = 1, opt.maxiter = 100, opt.tol = 0.1, opt.tau = (sqrt(5) -
   1)/2)
 }
 \arguments{
-\item{data}{PARAM_DESCRIPTION}
+\item{dat}{matrix, matrix that includes y (response),X (population covariates),
+Z (random effects covariates (not incl random intercept))}
 
-\item{init.beta}{PARAM_DESCRIPTION}
+\item{init.beta}{numeric, initial fixed effects estimates}
 
-\item{pen.effect}{PARAM_DESCRIPTION, Default: 'FE.L1'}
+\item{pen.effect}{character,which penalty to search on 
+c('FE.L1','RE.L1',FE.L2'','RE.L2'), Default: 'FE.L1'}
 
-\item{opt.lb}{PARAM_DESCRIPTION, Default: 0}
+\item{opt.lb}{numeric, start of search interval, Default: 0}
 
-\item{opt.ub}{PARAM_DESCRIPTION, Default: 1}
+\item{opt.ub}{numeric, end of search interval, Default: 1}
 
-\item{opt.maxiter}{PARAM_DESCRIPTION, Default: 100}
+\item{opt.maxiter}{numeric, maximum iterations to search, Default: 100}
 
-\item{opt.tol}{PARAM_DESCRIPTION, Default: 0.1}
+\item{opt.tol}{numeric, accuracy value, Default: 0.1}
 
 \item{opt.tau}{numeric, golden proportion coefficient (~0.618) Default: (sqrt(5) - 1)/2}
 }
 \value{
-OUTPUT_DESCRIPTION
+lmmen list object inluding lmmen fit object of min BIC solution
+ and summary statistics from the grid searc
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Solve for local minimum with one dimensional golden 
+section on a L1 lmmen penalty.
 }
 \examples{
-\dontrun{
-if(interactive()){
+\dontrun{ 
  dat <- initialize_example(n.i = 5,n = 30,q=4,seed=1)
  init <- init.beta(dat,method='glmnet')
  golden_section(dat,init,pen.effect = 'FE.L1')
  }
-}
 }

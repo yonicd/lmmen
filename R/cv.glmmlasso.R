@@ -5,13 +5,14 @@
 #' @param form.rnd list, named list containing random effect formula, Default: NULL
 #' @param lambda numeric, vector containing lasso penalty levels, Default: seq(500, 0, by = -5)
 #' @param family family, family function that defines the distribution link of the glmm, Default: gaussian(link = "identity")
-#' @return list
+#' @return list of a fitted glmmLasso object and the cv BIC path
 #' @examples
-#' \donttest{ 
-#' cv.glmmLasso(initialize_example(seed=1))
-#' }
+#' \dontrun{cv.glmmLasso(initialize_example(seed=1))}
 #' @seealso 
 #'  \code{\link[glmmLasso]{glmmLasso}}
+#'  @references 
+#'  Variable selection for generalized linear mixed models by ell 1-penalized estimation. 
+#'  Statistics and Computing, pages 1–18, 2014.
 #' @rdname cv.glmmLasso
 #' @export 
 #' @importFrom glmmLasso glmmLasso

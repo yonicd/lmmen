@@ -4,23 +4,24 @@
 \alias{cv.lmmlasso}
 \title{Cross Validation for lmmlasso package}
 \usage{
-cv.lmmlasso(data, lambda = seq(0, 500, 5), ...)
+cv.lmmlasso(dat, lambda = seq(0, 500, 5), ...)
 }
 \arguments{
-\item{data}{matrix, containing y,X,Z and subject variables}
+\item{dat}{matrix, containing y,X,Z and subject variables}
 
 \item{lambda}{numeric, path of positive regularization parameter, Default: seq(0, 500, 5)}
 
 \item{...}{parameters to pass to lmmlasso}
 }
 \value{
-numeric, vector that includes values of estimated fixed, random and bic
+lmmlasso fit object
 }
 \description{
 Cross Validation for lmmlasso package as shown in example xxx
 }
 \examples{
-\donttest{
- cv.lmmlasso(initialize_example(seed=1))
- }
+ \dontrun{cv.lmmlasso(initialize_example(seed = 1))}
+}
+\seealso{
+\code{\link[lmmlasso]{lmmlasso}}
 }

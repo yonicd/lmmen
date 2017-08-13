@@ -6,13 +6,63 @@
 #' c(L1.fixed,L2.fixed,L1.random,L2.random)
 #' @param eps numeric, tolerance level to pass to solve.QP, Default: 10^(-4)
 #' @param verbose boolean, show output during optimization Default: FALSE
-#' @return list
-#' @details DETAILS
+#' @return lmmen fit object including
+#' 
+#' fixed: estimated fixed effects coefficients
+#' 
+#' stddev: estimated random effects covariance matrix standard deviations 
+#' 
+#' sigma.2: standard error of the model residual effect
+#' 
+#' lambda: estimated lower triangle of \eqn{\Lambda} (correlation of random effects)
+#' 
+#' Mean.est: model prediction \eqn{X^{t}\beta}
+#' 
+#' loglike: log likelihood
+#' 
+#' df: degrees of freedom
+#' 
+#' BIC: Minimum BIC penalty value
+#' 
+#' frac: ratio placed on the penalties corresponding to BIC
+#' 
+#' Gamma.Mat.RE: estimated \eqn{\Gamma} 
+#' 
+#' Cov.Mat.RE: estimated random effect covariance matrix
+#'
+#' Corr.Mat.RE: estimate random effects correlation matrix
+#' 
+#' solveQP: output of the call to solveQP corresponding to min BIC
+#' 
+#' @details 
+#' 
+#' \eqn{y_i=x^{t}_{ij}\beta+z^{t}_{ij}b_i+\epsilon_i,}
+#' 
+#' \eqn{\epsilon_i\sim N(0,\sigma^2I_{n_i})}
+#' 
+#' The lmmen function solves for the folloing problem. 
+#' 
+#' \eqn{Q(\phi|y,b)=||y-Z\Lambda\Gamma b-X\beta||^2+\tilde{P}(\beta,d)}
+#'      
+#' \eqn{\tilde{P}(\beta,d)=}
+#' 
+#' \eqn{\lambda_2^f\sum\limits_{i\in P}\beta_i^2+\lambda_2^r\sum\limits_{j\in Q}d_j^2+}
+#' 
+#' \eqn{\lambda_1^f\sum\limits_{i \in P}|\beta_i|+\lambda_1^r\sum\limits_{j \in Q}|d_j|}
+#' 
+#'  Where \eqn{\tilde{P}} and \eqn{Q(\phi)} denote the penalty applied to the likelihood 
+#'  and the penalized log-likelihood. 
+#'  
+#'  When the final model is not a mixed effects model, but either a fixed effects or random 
+#'  effects model then the original form of the Elastic Net penalty is applied.
+#'  
 #' @examples 
 #'  dat <- initialize_example(n.i = 5,n = 30,q=4,seed=1)
 #'  init <- init.beta(dat,method='glmnet')
 #'  lmmen(data=dat,init.beta=init,frac=c(0.8,1,1,1))
 #' @importFrom quadprog solve.QP
+#' @seealso 
+#'  \code{\link[quadprog]{solve.QP}}
 #' @export 
 
 lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
@@ -272,18 +322,17 @@ lmmen = function(data, init.beta, frac, eps = 10^(-4),verbose=FALSE)
 	
 	fit$fixed = beta.BIC
 	fit$stddev = sqrt(diag(Cov.Mat.RE))
-  fit$lambda=lambda.BIC
-	fit$BIC = BIC.value
-	fit$frac = frac
 	fit$sigma.2 = sigma.2.BIC
-  fit$Gamma.Mat.RE = gamma.BIC.mat
-  fit$Cov.Mat.RE <- Cov.Mat.RE
-  fit$Full.cov.mat <- Full.cov.mat
+  fit$lambda=lambda.BIC
   fit$Mean.est <- Mean.est
   fit$loglike <- loglikes
   fit$df <- df.par
-	fit$Corr.Mat.RE <- round(diag(1/(fit$stddev+eps.tol))%*%Cov.Mat.RE%*%diag(1/(fit$stddev+eps.tol)),round.set)
-  fit$solveQP=beta.lambda
+	fit$BIC <- BIC.value
+	fit$frac <- frac
+  fit$Gamma.Mat.RE <- gamma.BIC.mat
+  fit$Cov.Mat.RE <- Cov.Mat.RE
+  fit$Corr.Mat.RE <- round(diag(1/(fit$stddev+eps.tol))%*%Cov.Mat.RE%*%diag(1/(fit$stddev+eps.tol)),round.set)
+  fit$solveQP <- beta.lambda
 
   fit <- structure(fit,class=c('lmmen'))
   

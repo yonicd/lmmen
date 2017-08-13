@@ -1,21 +1,22 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param dat PARAM_DESCRIPTION
+#' @title Golden section two dimensional grid search on L1 lmmen penalties
+#' @description Solve for local minimum with two dimensional golden 
+#' section on L1 lmmen penalties.
+#' @param dat matrix, matrix that includes y (response),X (population covariates),
+#' Z (random effects covariates (not incl random intercept))
 #' @param init.beta numeric, initial fixed effects estimates
 #' @param l2 numeric, L2 penalty levels Default: c(1, 1)
 #' @param opt.lb numeric, start of interval for L1 fixed and L1 random effects, Default: c(0, 0)
 #' @param opt.ub numeric, end of interval for L1 fixed and L1 random effects Default: c(1, 1)
-#' @param opt.maxiter numeric, maximum iterations to search, Default: 10
+#' @param opt.maxiter numeric, maximum iterations to search, Default: 100
 #' @param opt.tol numeric, accuracy value, Default: 0.1
 #' @param opt.tau numeric, golden proportion coefficient (~0.618) Default: (sqrt(5) - 1)/2
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @return lmmen list object inluding lmmen fit object of min BIC solution
+#'  and summary statistics from the grid search
 #' @examples 
-#' \donttest{
+#' \dontrun{
 #'  dat <- initialize_example(n.i = 5,n = 30,q=4,seed=1)
 #'  init <- init.beta(dat,method='glmnet')
-#'  golden_section_2d(dat,init)
-#' }
+#'  golden_section_2d(dat,init)}
 #' @rdname golden_section_2d
 #' @export 
 

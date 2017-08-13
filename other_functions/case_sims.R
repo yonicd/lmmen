@@ -96,8 +96,8 @@ pred<-rbind(lmmen.pred%>%mutate(type='LMMEN'),scad.pred%>%mutate(type='SCAD'))%>
   group_by(type,Ifpid)%>%summarise_at(.vars=vars('pr','bs','gm','bsgm'),.funs = funs(mean,sd))
 
 
-p3<-pred%>%reshape2::dcast(Ifpid~type,value.var='bs_mean')%>%
-  ggplot(aes(x=LMMEN,y=SCAD))+geom_point()+
+p3<-pred%>%reshape2::dcast(Ifpid~type,value.var='bs_mean')%>%mutate(id=1:nrow(.))%>%
+  ggplot(aes(x=LMMEN,y=SCAD))+geom_text(aes(label=id))+
   geom_abline(intercept=0,slope=1,linetype=2)+
   theme_bw(base_size = 21)+
   labs(x='LMMEN Brier Scores',y='SCAD Brier Scores')
@@ -110,21 +110,25 @@ p2=plot.data%>%filter(type=='RANDOM')%>%
   theme_bw(base_size = 21)+
   scale_x_discrete(labels=c('(Intercept)',names(case.data[[1]])[55:62]))
 
-p1=plot.data%>%filter(type=='FIXED')%>%
+p1.data=plot.data%>%filter(type=='FIXED')%>%
   left_join(plot.data%>%filter(type=='FIXED'&variable=='LMMEN')%>%
-             arrange(desc(value))%>%mutate(x=factor(1:n()))%>%select(var,x),by=c('var'))%>%
-  ggplot(aes(x=x,y=value/100,group=factor(var),fill=variable))+
+             arrange(desc(value))%>%mutate(x=factor(1:n()))%>%select(var,x),by=c('var'))
+p1.data$var_label<-names(X)[as.numeric(gsub('^X','',plot.table$var))]
+
+p1.data.label=p1.data[p1.data$variable=='LMMEN',c('var_label','x')]%>%arrange(x)
+p1.data.label$var_label=factor(p1.data.label$var_label,levels=p1.data.label$var_label)
+
+
+p1<-p1.data%>%ggplot(aes(x=x,y=value/100,group=factor(var),fill=variable))+
   geom_bar(stat='identity',position='dodge',colour='black',
            show.legend = FALSE)+
-  facet_grid(variable~.)+
+  facet_grid(variable~.)+scale_x_discrete(labels=p1.data.label$var_label)+
   labs(x='Fixed Covariate',y='% Persistency')+
-  theme_bw(base_size = 21)+
-  theme(axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
+  theme_bw(base_size = 21)+theme(axis.text.x=element_text(angle=90,vjust=0,size=rel(0.8)))
 
 pdf('~/Dropbox/GJ_paper/paper/lmmen_paper-casepanel001.pdf',width=18,height=13)
-plot(as.ggedit(list(p1+ggtitle('Fixed Effects Persistence (c)'),
-                    p2+ggtitle('Random Effects Persistence (b)'),
+plot(ggedit::as.ggedit(list(p1+ggtitle('Fixed Effects Persistence (b)'),
+                    p2+ggtitle('Random Effects Persistence (c)'),
                     p3+ggtitle('Prediction Accuracy (a)'))),
      plot.layout = list(list(rows=2,cols=1),
                         list(rows=2,cols=2),

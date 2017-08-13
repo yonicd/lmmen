@@ -19,16 +19,17 @@ cv.glmmLasso(dat, form.fixed = NULL, form.rnd = NULL, lambda = seq(500, 0,
 \item{family}{family, family function that defines the distribution link of the glmm, Default: gaussian(link = "identity")}
 }
 \value{
-list
+list of a fitted glmmLasso object and the cv BIC path
 }
 \description{
 Cross Validation for glmmLasso package as shown in example xxx
 }
 \examples{
-\donttest{ 
-cv.glmmLasso(initialize_example(seed=1))
-}
+\dontrun{cv.glmmLasso(initialize_example(seed=1))}
 }
 \seealso{
 \code{\link[glmmLasso]{glmmLasso}}
+ @references 
+ Variable selection for generalized linear mixed models by ell 1-penalized estimation. 
+ Statistics and Computing, pages 1–18, 2014.
 }
