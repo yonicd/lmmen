@@ -66,14 +66,14 @@ cv.glmmLasso=function(dat,
     for (j in seq_along(lambda)[-1]) {
         if (progress) setTxtProgressBar(pb, j)        
         fn <- suppressMessages(suppressWarnings(
-            try(glmmLasso::glmmLasso(fix = stats::as.formula(form.fixed),
+            try(glmmLasso::glmmLasso(fix = form.fixed,
                                      rnd = form.rnd,
                                      data = dat,
                                      lambda = lambda[j],
                                      switch.NR = FALSE,
                                      final.re=FALSE,
                                      control =
-                                         glmmLassControl(start=next.start$start,
+                                         glmmLassoControl(start=next.start$start,
                                                          q.start=next.start$q.start)),
                                      silent=TRUE)))
         if (!inherits(fn,"try-error")) {
