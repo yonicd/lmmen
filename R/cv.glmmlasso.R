@@ -1,11 +1,12 @@
 #' @title Cross Validation for glmmLasso package
 #' @description Cross Validation for glmmLasso package as shown in example xxx
-#' @param dat data.frame, containing y,X,Z and subject variables
-#' @param form.fixed formula, fixed param formula, Default: NULL
-#' @param form.rnd list, named list containing random effect formula
-#' @param lambda numeric, vector containing lasso penalty levels
+#' @param dat data.frame, containing y, X, Z and subject variables
+#' @param form.fixed formula, fixed effect formula
+#' @param form.rnd named list containing random effect formula
+#' @param lambda numeric vector containing lasso penalty levels
 #' @param family family, family function that defines the distribution link of the glmm, Default: gaussian(link = "identity")
-#' @param progress logical
+#' @param progress logical: show progress bar?
+#' @param save.all logical: return all fitted objects?
 #' @return list of a fitted glmmLasso object and the cv BIC path
 #' @examples
 #' \dontrun{cv.glmmLasso(initialize_example(seed=1))}
@@ -26,6 +27,8 @@ cv.glmmLasso=function(dat,
                       progress = TRUE
                       ) {
 
+  ## FIXME: work harder at extracting information from fit list (e.g. parameter table)
+  ## FIXME: allow user to pass glmmLasso control options through ...
     stopifnot(inherits(dat, "data.frame"))
     d.size <- length(unique(dat$subject))*(sum(grepl('^Z',names(dat)))+1)+
         (sum(grepl('^X',names(dat)))+1)
@@ -87,5 +90,7 @@ cv.glmmLasso=function(dat,
                       numeric(1))
     
     fit.opt <- fit.list[[which.min(BIC_vec)]]
-    list(fit.opt=fit.opt, BIC_path=BIC_vec)
+    ret <- list(fit.opt=fit.opt, BIC_path=BIC_vec)
+    if (save.all) ret <- c(ret,list(fit.list))
+    return(ret)
 }  
