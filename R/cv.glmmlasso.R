@@ -24,7 +24,8 @@ cv.glmmLasso=function(dat,
                       form.rnd=NULL,
                       lambda=seq(500,0,by=-5),
                       family=stats::gaussian(link = "identity"),
-                      progress = TRUE
+                      progress = TRUE,
+                      save.all = FALSE
                       ) {
 
   ## FIXME: work harder at extracting information from fit list (e.g. parameter table)
